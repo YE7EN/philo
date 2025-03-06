@@ -23,12 +23,13 @@
 
 typedef struct	s_philo
 {
+	int				rank;
 	int				eating;
 	int				meals_eaten;
 	int				nb_philos;
 	int				num_times_to_eat;
 	int				*dead;
-	pthread_t		*thread;
+	pthread_t		thread;
 	size_t			last_meal;
 	size_t			time_to_die;
 	size_t			time_to_eat;
@@ -47,7 +48,7 @@ typedef struct	s_data
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	meal_lock;
 	pthread_mutex_t	write_lock;
-	t_philo			philo;
+	t_philo			*philos;
 }				t_data;
 
 

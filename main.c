@@ -65,109 +65,133 @@ void	ft_verif_argc(int argc)
 	}
 }
 
-t_philo	*ft_init(char **argv, t_philo **philo)
+// int	ft_init_philo(t_data *data)
+// {
+// 	int i;
+
+// 	i = 0;
+// 	while (i < data->philos->nb_philos)
+// 	{
+// 		data->philos[i].rank = i + 1;
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+
+
+t_data	*ft_init(char **argv, t_data *data)
 {
-
-	*philo = NULL;
-	*philo = malloc(sizeof(t_philo));
-	if (!(*philo))
-		return (NULL);
-		
-	(*philo)->nb_philos = (ft_atoi(argv[1]));
-	(*philo)->time_to_die = (ft_atoi(argv[2]));
-	(*philo)->time_to_eat = (ft_atoi(argv[3]));
-	(*philo)->time_to_sleep = (ft_atoi(argv[4]));
-	if (argv[5])
-		(*philo)->meals_eaten = (ft_atoi(argv[5]));
-
-
-	// printf("%d\n", (*philo)->nb_philos);
-	// printf("%zu\n", (*philo)->time_to_die);
-	// printf("%zu\n", (*philo)->time_to_eat);
-	// printf("%zu\n", (*philo)->time_to_sleep);
-	// if (argv[5])
-	// 	printf("%d\n", (*philo)->meals_eaten);
-
-	// printf("\n\n\n");
-	return (*philo);
-
-
-
-}
-
-int primes[10] = {1, 4, 7, 8, 6, 21};
-
-void*	routine()
-{
-
-
-	printf("hallo\n\n\n");
-
-	// int index = *(int*)i;
-	
-	// printf("%d\n", primes[index]);
-
-	
-	// t_philo	*philo;
-	
-	// philo = (t_philo *)p;
-	// while (1)
-	// {
-		// int i = 0;
-		// i++;
-		// printf("%d", i);
-		// break ;
-	// }
-	// return (p);
-	// free (i);
-	return (0);
-}
-
-int	init_thread(t_philo	*philo)
-{
-	// t_data		*th;
-	int			i;
+	int i;
 
 	i = 0;
-	
-	while (i < philo->nb_philos)
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (NULL);
+	data->philos = malloc(sizeof(t_philo) * (ft_atoi(argv[1])));
+	if (!data->philos)
 	{
-		int *a = malloc(sizeof(int));
-		*a = i;
-		// printf("hallo\n\n\n");
-		if (pthread_create(&philo->thread[i], NULL, &routine, NULL) != 0)
-			perror("error");
-		// printf("ui\n\n\n");
+		free (data);
+		return (NULL);
+	}
+	while (i < ft_atoi(argv[1]))
+	{
+		data->philos[i].rank = i + 1;
 		
+		printf("%d\n", data->philos[i].rank);
+
+		data->philos[i].nb_philos = (ft_atoi(argv[1]));
+		data->philos[i].time_to_die = (ft_atoi(argv[2]));
+		data->philos[i].time_to_eat = (ft_atoi(argv[3]));
+		data->philos[i].time_to_sleep = (ft_atoi(argv[4]));
+		if (argv[5])
+			data->philos->meals_eaten = (ft_atoi(argv[5]));
+		// else
+			// ????
+		data->philos[i].eating = 0;
+		data->philos[i].meals_eaten = 0;
+	
+		// dead
+		// last meal
+		// start_time
+		// l_fork
+		// r_fork
+		// dead_lock
+		// meal_lock
+		// write_lock
+		// 
+		
+
+
 		i++;
 	}
+	// if (ft_init_philo(data) != 0)
+	// {
+	// 	free (data->philos);
+	// 	free (data);
+	// }
+	return (data);
+}
 
-	
-	return (0);
+
+void	*routine(void *arg)
+{
+	t_philo *philo = (t_philo *)arg;
+
+	printf("Philosophe : %d debut routine\n", philo->nb_philos);
+    
+	usleep(500000);
+
+	printf("Philosophe : %d fin routine\n", philo->nb_philos);
+	return (NULL);
+}
+
+
+
+void	init_thread(t_data *data)
+{
+
+	int i;
+
+	i = 0;
+
+	while (i < data->philos->nb_philos)
+	{
+		if (pthread_create(&data->philos[i].thread, NULL, &routine, &data->philos[i]) != 0)
+		{
+			printf("that's fuckep up son");
+			exit(EXIT_FAILURE);
+		}
+		sleep (2);
+		printf("\n\n%d\n\n", i);
+		i++;
+	}
+	i = 0;
+	while (i < data->philos[0].nb_philos)
+	{
+		pthread_join(data->philos[i].thread, NULL);
+		i++;
+	}
 }
 
 int	main(int argc, char **argv)
 {
 	t_data	*data;
-	t_philo	*philo;
 
-	
 	ft_verif_argc(argc);
 	ft_verif_argv(argv);
-
-	ft_init(argv, &philo);
-
 	
-	// printf("%d\n", philo->nb_philos);
-	// printf("%zu\n", philo->time_to_die);
-	// printf("%zu\n", philo->time_to_eat);
-	// printf("%zu\n", philo->time_to_sleep);
-	// if (argv[5])
-	// 	printf("%d\n", philo->meals_eaten);
-	
-	init_thread(philo);
+	data = ft_init(argv, data);
+	if (!data)
+		return (1);
+	init_thread(data);
 
-	printf("\n\n\nGG\n\n\n");
+	if (data->philos)
+		free (data->philos);
+	if (data)
+		free (data);
+
+	printf("\n\n\nENDING\n\n\n");
 	return (0);
 }
 
