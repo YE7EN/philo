@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pjurdana <pjurdana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:41 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/07 10:11:15 by pjurdana         ###   ########.fr       */
+/*   Updated: 2025/03/07 11:50:10 by quentin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ typedef struct	s_philo
 	int				num_times_to_eat;
 	int				*dead;
 	pthread_t		thread;
-	size_t			last_meal;
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
-	size_t			start_time;
+	time_t			last_meal;
+	time_t			time_to_die;
+	time_t			time_to_eat;
+	time_t			time_to_sleep;
+	time_t			start_time;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	dead_lock;
@@ -51,12 +51,12 @@ typedef struct	s_data
 	t_philo			*philos;
 }				t_data;
 
-
+////////////*utils.c////////////////
 int	ft_atoi(const char *nptr);
 
 
-
-t_data	*ft_init(char **argv, t_data *data);
+////////////*init.c////////////////
+int		init_value(char **argv, t_data **data);
 void	init_thread(t_data *data);
 
 

@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror -pthread -g
 
 SRC =	src/main.c \
 		src/init.c \
-		# src/utils.c\
+		src/utils.c \
 
 		
 
