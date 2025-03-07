@@ -6,7 +6,7 @@
 /*   By: pjurdana <pjurdana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:41 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/06 11:21:53 by pjurdana         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:11:15 by pjurdana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,16 @@ typedef struct	s_data
 	pthread_mutex_t	write_lock;
 	t_philo			*philos;
 }				t_data;
+
+
+int	ft_atoi(const char *nptr);
+
+
+
+t_data	*ft_init(char **argv, t_data *data);
+void	init_thread(t_data *data);
+
+
 
 
 

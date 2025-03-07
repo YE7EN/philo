@@ -3,8 +3,9 @@ NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread -g
 
-SRC = src/main.c \
-		src/utils.c\
+SRC =	src/main.c \
+		src/init.c \
+		# src/utils.c\
 
 		
 
