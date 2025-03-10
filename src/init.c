@@ -6,7 +6,7 @@
 /*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:07:48 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/07 13:28:53 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/10 12:05:11 by quentin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	init_value(char **argv, t_data **data)
 	int	nb_philo;
 	
 	i = 0;
-	nb_philo = ft_atoi(argv[1]);	
+	nb_philo = ft_atoi(argv[1]);
 	if (nb_philo == -1)
 		return (-1);
 	(*data) = malloc(sizeof(t_data));
@@ -88,31 +88,53 @@ int	init_value(char **argv, t_data **data)
 void	*routine(void *arg)
 {
 
-
-
 	t_philo *philo = (t_philo *)arg;
-	int i = 0;
-	// int i = 0;
-	// printf("Philosophe : %d debut routine\n", philo->nb_philos);
-	// usleep(500000);
-	// printf("Philosophe : %d fin routine\n", philo->nb_philos);
+	int	i;
+
+	i = 0;
+	pthread_mutex_init(&philo->meal_lock, NULL);
+	pthread_mutex_lock(&philo->meal_lock);
+
+//	printf("%d : eating", philo->rank);
+//	 miam je suis le philoe x et je mange mes morts
+
+	//////oh les mains on ne touche plus a rien je vais push car je vais graille!!!!!!!!!!!!!!!!!!!
+
+	pthread_mutex_unlock(&philo->meal_lock);
+
+	//if (philo->rank  % 2 == 0) 
+		//usleep(1000);
+// c'est pour eviter les conflits des fouchettes au debut du programme,
+// si ca va trop vite ils prennent tous une fourchette
+// et donc personne peut manger et tout le monde meurs
+// on peut faire sur les impairs comme tu preferes
+
+// routine dans une while de verif peut etre ?
+	//while
+		// eat
+		// sleep
+		// think
+
+	while (i == 0) // utiliser i pour verifier la mort d'un philo pour mettre fin ?
+	{
+
+//		i = eating(philo, i);
+
+//		i = sleeping(philo, i);
+
+//		i = thinking(philo, i);
 
 
-	printf("Philosophe : %d debut routine\n", philo->rank);
-	// pthread_mutex_lock(&philo->write_lock);
-	//printf("\ni :%d\n", i);
-	usleep(500000);
-	// pthread_mutex_unlock(&philo->write_lock);
-	printf("Philosophe : %d fin routine\n", philo->rank);
+		printf("Philosophe : %d debut routine\n", philo->rank);
+		// pthread_mutex_lock(&philo->write_lock);
+		//printf("\ni :%d\n", i);
+		usleep(500000);
+		// pthread_mutex_unlock(&philo->write_lock);
+		printf("Philosophe : %d fin routine\n", philo->rank);
+		
+	}
 
-	i++;
-	// printf("Philosophe : %d debut routine\n", (*philo).rank);
-	// usleep(500000);
-	// printf("Philosophe : %d fin routine\n", (*philo).rank);
-	// printf("Philosophe : %lu debut routine\n", philo[i].thread);
-	// usleep(500000);
-	// printf("Philosophe : %lu fin routine\n", philo[i].thread);
-	// i++;
+
 	return (NULL);
 }
 
