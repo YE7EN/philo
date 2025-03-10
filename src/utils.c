@@ -6,11 +6,13 @@
 /*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:53:58 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/07 13:25:20 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/10 15:14:40 by quentin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+
 
 int	ft_atoi(const char *nptr)
 {
