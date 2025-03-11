@@ -6,7 +6,7 @@
 /*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:41 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/07 11:50:10 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/11 15:27:20 by quentin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,20 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 
 
 
 typedef struct	s_philo
 {
-	int				rank;
+	int				rank;//philo's place at the table
 	int				eating;
 	int				meals_eaten;
 	int				nb_philos;
 	int				num_times_to_eat;
-	int				*dead;
-	pthread_t		thread;
+	int				*dead; //boolean 1=philo's dead 0=all alive
+	pthread_t		thread; //philo
 	time_t			last_meal;
 	time_t			time_to_die;
 	time_t			time_to_eat;
@@ -37,9 +38,9 @@ typedef struct	s_philo
 	time_t			start_time;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
-	pthread_mutex_t	dead_lock;
-	pthread_mutex_t	meal_lock;
-	pthread_mutex_t	write_lock;
+	pthread_mutex_t	*dead_lock;
+	pthread_mutex_t	*meal_lock;
+	pthread_mutex_t	*write_lock;
 }				t_philo;
 
 typedef struct	s_data
@@ -56,8 +57,16 @@ int	ft_atoi(const char *nptr);
 
 
 ////////////*init.c////////////////
-int		init_value(char **argv, t_data **data);
-void	init_thread(t_data *data);
+int		init_philos(char **argv, t_data **data, pthread_mutex_t *forks);
+void	init_fork(pthread_mutex_t *forks, int nb_philo);
+void init_data(t_data ** data, t_philo *philo);
+int	init_args(t_data **data, char ** argv);
+int	init_malloc_struct(char **argv, t_data **data, int nb_philo);
+
+////////////*routine.c////////////////
+void	*routine(void *arg);
+void	launch_thread(t_data *data);
+
 
 
 

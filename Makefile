@@ -6,8 +6,8 @@ CFLAGS = -Wall -Wextra -Werror -pthread -g
 SRC =	src/main.c \
 		src/init.c \
 		src/utils.c \
+		src/routine.c\
 
-		
 
 INC = includes
 OBJ_DIR = .obj
