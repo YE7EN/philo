@@ -19,7 +19,7 @@ time_t	get_current_time(void)
 	
 	if (gettimeofday(&time, NULL) == -1)
 		write(2, "error in gettimeofday process\n", 31);
-	current_time = time.tv_sec + time.tv_usec;
+	current_time = time.tv_sec * 1000 + time.tv_usec / 1000;
 	return (current_time);
 }
 
