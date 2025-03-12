@@ -6,7 +6,7 @@
 /*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:41 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/12 11:46:55 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/12 17:30:25 by quentin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct	s_data
 ////////////*utils.c////////////////
 int	ft_atoi(const char *nptr);
 time_t	get_current_time(void);
+int	ft_usleep(size_t milliseconds);
+
 
 ////////////*init.c////////////////
 int		init_philos(char **argv, t_data *data, t_philo *philos, pthread_mutex_t *forks);
@@ -69,6 +71,8 @@ void	launch_thread(t_data *data);
 
 ////////////*monitor.c////////////////
 void	philo_scribing(char *str, t_philo *philo, int rank);
+int	check_death(void *arg);
+void	*supervisor(void *arg);
 
 
 

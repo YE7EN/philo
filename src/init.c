@@ -6,7 +6,7 @@
 /*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:07:48 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/12 12:12:50 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/12 16:40:05 by quentin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	init_args(t_philo *philos, char ** argv)
 {
 	philos->nb_philos = (ft_atoi(argv[1]));
+
 	philos->time_to_die = (ft_atoi(argv[2]));
 	philos->time_to_eat = (ft_atoi(argv[3]));
 	philos->time_to_sleep = (ft_atoi(argv[4]));

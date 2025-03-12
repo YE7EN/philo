@@ -6,7 +6,7 @@
 /*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:53:58 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/11 15:07:11 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/12 17:28:51 by quentin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,14 @@ int	ft_atoi(const char *nptr)
 		nptr++;
 	}
 	return (res);
+}
+
+int	ft_usleep(size_t milliseconds)
+{
+	size_t	start;
+
+	start = get_current_time();
+	while ((get_current_time() - start) < milliseconds)
+		usleep(500);
+	return (0);
 }
