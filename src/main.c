@@ -6,7 +6,7 @@
 /*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:35 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/11 15:28:27 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/12 12:05:23 by quentin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,36 +21,21 @@ static void	ft_verif_argc(int argc)
 	}
 }
 
-// void	init_fork(pthread_mutex_t *forks, int nb_philo)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < nb_philo)
-// 	{
-// 		pthread_mutex_init(&forks[i], NULL);
-// 		i++;
-// 	}
-// }//to_init.c
-
 int	main(int argc, char **argv)
 {
-	t_data	*data;
-	t_philo *philos;
-	pthread_mutex_t	*forks;
-	// data = NULL;
+	t_data	data;
+	t_philo philos[ft_atoi(argv[1])];
+	pthread_mutex_t	forks[ft_atoi(argv[1])];
 
 	ft_verif_argc(argc);
-	init_data(&data, &philos);
-	init_fork(forks, data->philos->nb_philos);
-	if (init_philos(argv, &data, forks) != 0)
+	init_data(&data, philos);
+	init_fork(forks, ft_atoi(argv[1]));
+	if (init_philos(argv, &data, philos, forks) != 0)
 		return (1);
-	launch_thread(data);
-
-	if (data->philos)
-		free (data->philos);
-	if (data)
-		free (data);
+	printf("\n\nrank after init : %d\n\n", philos[3].rank);
+	
+	//jusqu'ici on est clean//
+	launch_thread(&data);
 
 	printf("\n\nENDING\n\n");
 	return (0);

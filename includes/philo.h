@@ -6,7 +6,7 @@
 /*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:41 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/11 15:27:20 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/12 11:46:55 by quentin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,21 @@ typedef struct	s_data
 
 ////////////*utils.c////////////////
 int	ft_atoi(const char *nptr);
-
+time_t	get_current_time(void);
 
 ////////////*init.c////////////////
-int		init_philos(char **argv, t_data **data, pthread_mutex_t *forks);
+int		init_philos(char **argv, t_data *data, t_philo *philos, pthread_mutex_t *forks);
 void	init_fork(pthread_mutex_t *forks, int nb_philo);
-void init_data(t_data ** data, t_philo *philo);
-int	init_args(t_data **data, char ** argv);
-int	init_malloc_struct(char **argv, t_data **data, int nb_philo);
+void init_data(t_data *data, t_philo *philo);
+int	init_args(t_philo *philos, char ** argv);
+//int	init_malloc_struct(t_data **data, int nb_philo);
 
 ////////////*routine.c////////////////
 void	*routine(void *arg);
 void	launch_thread(t_data *data);
 
-
+////////////*monitor.c////////////////
+void	philo_scribing(char *str, t_philo *philo, int rank);
 
 
 

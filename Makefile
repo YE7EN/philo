@@ -7,6 +7,8 @@ SRC =	src/main.c \
 		src/init.c \
 		src/utils.c \
 		src/routine.c\
+		src/monitor.c\
+
 
 
 INC = includes
