@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:35 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/12 18:17:40 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/17 14:14:31 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int	main(int argc, char **argv)
 	init_fork(forks, ft_atoi(argv[1]));
 	if (init_philos(argv, &data, philos, forks) != 0)
 		return (1);
-	printf("\n\nrank after init : %d\n\n", philos[4].rank);
-	
 	//jusqu'ici on est clean//
 	launch_thread(&data);
 

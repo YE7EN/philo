@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:07:48 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/13 16:36:21 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/17 13:00:47 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ int	init_args(t_philo *philos, char ** argv)
 		philos->num_times_to_eat = (ft_atoi(argv[5]));
 	else
 		philos->num_times_to_eat = -1;
-	
+
 	return (0);
 }
 
 int	init_philos(char **argv, t_data *data, t_philo *philos, pthread_mutex_t *forks)
-{	
+{
 	int i;
-	
+
 	i = -1;
 	while (++i < ft_atoi(argv[1]))
 	{
@@ -47,11 +47,11 @@ int	init_philos(char **argv, t_data *data, t_philo *philos, pthread_mutex_t *for
 		philos[i].dead = &data->is_dead;
 		philos[i].start_time = get_current_time();
 		philos[i].last_meal = get_current_time();
-		philos[i].l_fork = &forks[i];
+		philos[i].r_fork = &forks[i];
 		if (i == 0)
-			philos[i].r_fork = &forks[ft_atoi(argv[1]) - 1];
+			philos[i].l_fork = &forks[philos[i].nb_philos - 1];
 		else
-			philos[i].r_fork = &forks[i - 1];
+			philos[i].l_fork = &forks[i - 1];
 	}
 	return (0);
 }
