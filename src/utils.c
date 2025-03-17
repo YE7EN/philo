@@ -15,8 +15,8 @@
 time_t	get_current_time(void)
 {
 	struct timeval	time;
-	time_t current_time;
-	
+	time_t			current_time;
+
 	if (gettimeofday(&time, NULL) == -1)
 		write(2, "error in gettimeofday process\n", 31);
 	current_time = time.tv_sec * 1000 + time.tv_usec / 1000;
@@ -26,28 +26,24 @@ time_t	get_current_time(void)
 int	ft_atoi(const char *nptr)
 {
 	int	res;
-	
+
 	res = 0;
 	while (*nptr)
 	{
 		if (*nptr < '0' || *nptr > '9')
 		{
-			printf("Error\nBad args detected\n");	
+			printf("Error\nBad args detected\n");
 			return (-1);
-		} 
+		}
 		res = res * 10 + (*nptr - '0');
 		nptr++;
 	}
 	return (res);
 }
 
-
-
-
-
-void free_all(t_data *data, pthread_mutex_t *forks)
+void	free_all(t_data *data, pthread_mutex_t *forks)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	pthread_mutex_destroy(&data->write_lock);
@@ -59,7 +55,6 @@ void free_all(t_data *data, pthread_mutex_t *forks)
 		i++;
 	}
 }
-
 
 int	ft_usleep(size_t milliseconds)
 {
