@@ -6,7 +6,7 @@
 /*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:07:48 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/12 16:40:05 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/13 16:36:21 by quentin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,13 @@ int	init_philos(char **argv, t_data *data, t_philo *philos, pthread_mutex_t *for
 		philos[i].write_lock = &data->write_lock;
 		philos[i].rank = i + 1;
 		philos[i].eating = 0;
+		philos[i].meals_eaten = 0;
 		philos[i].dead = &data->is_dead;
-		philos[i].last_meal = get_current_time();
 		philos[i].start_time = get_current_time();
+		philos[i].last_meal = get_current_time();
 		philos[i].l_fork = &forks[i];
 		if (i == 0)
-			philos[i].r_fork = &forks[ft_atoi(argv[1])];
+			philos[i].r_fork = &forks[ft_atoi(argv[1]) - 1];
 		else
 			philos[i].r_fork = &forks[i - 1];
 	}

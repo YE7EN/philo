@@ -6,7 +6,7 @@
 /*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:53:58 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/12 17:28:51 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/13 16:26:22 by quentin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,32 @@ int	ft_atoi(const char *nptr)
 	return (res);
 }
 
+
+
+
+
+void free_all(t_data *data, pthread_mutex_t *forks)
+{
+	int i;
+
+	i = 0;
+	pthread_mutex_destroy(&data->write_lock);
+	pthread_mutex_destroy(&data->meal_lock);
+	pthread_mutex_destroy(&data->dead_lock);
+	while (i < data->philos->nb_philos)
+	{
+		pthread_mutex_destroy(&forks[i]);
+		i++;
+	}
+}
+
+
 int	ft_usleep(size_t milliseconds)
 {
 	size_t	start;
 
 	start = get_current_time();
 	while ((get_current_time() - start) < milliseconds)
-		usleep(500);
+		usleep(10);
 	return (0);
 }
