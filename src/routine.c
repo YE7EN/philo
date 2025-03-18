@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:15:23 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/17 14:07:11 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/18 14:16:18 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,15 @@ void	eating(t_philo *philo)
 		pthread_mutex_lock(philo->r_fork);
 		philo_scribing("has taken a fork", philo, philo->rank);
 	}
-
 	philo_scribing("is eating", philo, philo->rank);
-
 	pthread_mutex_lock(philo->meal_lock);
 	philo->last_meal = get_current_time();
-	// pthread_mutex_lock(philo->write_lock);
-	// printf("\n\n%d\n\n", philo->meals_eaten);
-	// pthread_mutex_unlock(philo->write_lock);
-	pthread_mutex_unlock(philo->meal_lock);
-	ft_usleep(philo->time_to_eat);
-	pthread_mutex_lock(philo->meal_lock);
 	philo->meals_eaten++; // probleme qui a mange ([i]) faire une while des philo avec un int qui s'incremente quand le philo i a tout manger et ils ont tous manger si le int atteint le nombre de repas demande dans le monitor I guess
 	pthread_mutex_unlock(philo->meal_lock);
+	if (philo->time_to_eat != 0)
+		ft_usleep(philo->time_to_eat);
+	//pthread_mutex_lock(philo->meal_lock);
+	//pthread_mutex_unlock(philo->meal_lock);
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
 }
@@ -81,18 +77,22 @@ void	*routine(void *arg)
 	{
 		eating(philo);
 		sleeping_and_thinking(philo);
-
-		// if (*philo->dead == 1)
-		// 	exit(EXIT_FAILURE);
-
+		pthread_mutex_lock(philo->dead_lock);
+		if (*philo->dead == 1)
+		{
+			ft_usleep(500);
+			break;
+		}
+		pthread_mutex_unlock(philo->dead_lock);
 	}
-return (NULL);
+	pthread_mutex_unlock(philo->write_lock);
+	return (NULL);
 }
 
 
 
 
-
+#include <string.h>
 
 void	launch_thread(t_data *data)
 {
@@ -126,7 +126,6 @@ void	launch_thread(t_data *data)
 
 	while (i < data->philos[0].nb_philos)
 	{
-		pthread_join(data->philos[i].thread, NULL);
 		i++;
 	}
 	// pthread_attr_destroy(&data->philos->write_lock);
