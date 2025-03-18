@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin <quentin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:53:58 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/13 16:26:22 by quentin          ###   ########.fr       */
+/*   Updated: 2025/03/18 16:57:07 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,16 @@ void	free_all(t_data *data, pthread_mutex_t *forks)
 	}
 }
 
-int	ft_usleep(size_t milliseconds)
+int	ft_usleep(size_t milliseconds, int dead)
 {
 	size_t	start;
 
 	start = get_current_time();
 	while ((get_current_time() - start) < milliseconds)
-		usleep(10);
+	{
+		if (dead == 1)
+			break;
+		usleep(1);
+	}
 	return (0);
 }

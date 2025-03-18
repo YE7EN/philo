@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 12:25:31 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/18 14:15:35 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:59:18 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,39 +24,38 @@ void	philo_scribing(char *str, t_philo *philo, int rank)
 		printf("%ld %d %s\n", time, rank, str);
 		pthread_mutex_unlock(philo->write_lock);
 	}
-	else
-	{
-		pthread_mutex_lock(philo->write_lock);
-		time = get_current_time() - philo->start_time;
-		printf("%ld %d %s\n", time, rank, str);
-		// pthread_mutex_unlock(philo->write_lock);
-	}
+	// else
+	// {
+	// 	pthread_mutex_lock(philo->write_lock);
+	// 	time = get_current_time() - philo->start_time;
+	// 	printf("%ld %d %s\n", time, rank, str);
+	// 	//pthread_mutex_unlock(philo->write_lock);
+	// }
 	pthread_mutex_unlock(philo->dead_lock);
 }
 
 int	check_if_all_eaten(void *arg)
 {
-	t_philo	*philo;
+	t_data	*data;
 	int		i;
 	int		for_all;
 
 	i = 0;
-	philo = (t_philo *) arg;
+	data = (t_data *) arg;
 	for_all = 0;
-	while (i < philo->nb_philos)
+	while (i < data->philos->nb_philos)
 	{
-		pthread_mutex_lock(philo[i].meal_lock);
-		if (philo[i].meals_eaten >= philo->num_times_to_eat && philo->num_times_to_eat > 0)
+		pthread_mutex_lock(data->philos[i].meal_lock);
+		if (data->philos[i].meals_eaten >= data->philos->num_times_to_eat && data->philos->num_times_to_eat > 0)
 		{
 				for_all++;
 		}
-		pthread_mutex_unlock(philo[i].meal_lock);
-		if (for_all == philo->nb_philos)
+		pthread_mutex_unlock(&data->meal_lock);
+		if (for_all == data->philos->nb_philos)
 		{
-			pthread_mutex_lock(philo->dead_lock);
-			(*philo[i].dead = 1);
-			pthread_mutex_unlock(philo->dead_lock);
-			philo->time_to_eat = 0;
+			pthread_mutex_lock(data->philos->dead_lock);
+			(data->is_dead = 1);
+			pthread_mutex_unlock(&data->dead_lock);
 			return (1);
 		}
 		i++;
@@ -66,56 +65,55 @@ int	check_if_all_eaten(void *arg)
 }
 int	check_death(void *arg)
 {
-	t_philo	*philo;
+	t_data	*data;
 	time_t	time;
 	int	i;
 
 	i = 0;
-	philo = (t_philo *)arg;
+	data = (t_data *)arg;
 
 		i = 0;
 
-	while (i < philo->nb_philos)
+	while (i < data->philos->nb_philos)
 	{
 		time = get_current_time();
-
-		pthread_mutex_lock(philo[i].meal_lock);
-
-		if (time - philo[i].last_meal >= philo[i].time_to_die)
+		pthread_mutex_lock(&data->meal_lock);
+		if (time - data->philos[i].last_meal >= data->philos[i].time_to_die)
 		{
-			pthread_mutex_lock(philo->dead_lock);
-			(*philo[i].dead = 1);
-			pthread_mutex_unlock(philo->dead_lock);
-			philo_scribing("mort 🪦​", philo, philo[i].rank);
+			pthread_mutex_lock(&data->dead_lock);
+			(data->is_dead = 1);
+			pthread_mutex_unlock(&data->dead_lock);
+			pthread_mutex_lock(&data->write_lock);
+			printf("%ld, %d, died 🪦​", get_current_time() - data->philos->start_time, data->philos[i].rank);
+			pthread_mutex_unlock(&data->write_lock);
+			pthread_mutex_unlock(&data->meal_lock);
 			break ;
 		}
-
-			pthread_mutex_unlock(philo[i].meal_lock);
-			usleep(5);
-			i++;
+		pthread_mutex_unlock(&data->meal_lock);
+		usleep(5);
+		i++;
 	}
-	pthread_mutex_lock(philo->dead_lock);
-	if (*philo->dead == 1)
+	pthread_mutex_lock(&data->dead_lock);
+	if (data->is_dead == 1)
 	{
-		pthread_mutex_unlock(philo->dead_lock);
+		pthread_mutex_unlock(&data->dead_lock);
 		return (1);
 	}
-	pthread_mutex_unlock(philo->dead_lock);
+	pthread_mutex_unlock(&data->dead_lock);
 	return (0);
 }
 
 
 void	*supervisor(void *arg)
 {
-	t_philo *philos;
+	t_data *data;
 
-	philos = (t_philo *) arg;
+	data = (t_data *) arg;
 	while (1)
 	{
-		if (check_death(philos) == 1 || check_if_all_eaten(philos) == 1)
+		if (check_death(data) == 1 || check_if_all_eaten(data) == 1)
 		{
-			//printf("j'ai bien mange woulah\n\n\n");
-			ft_usleep(500);
+			ft_usleep(1, data->is_dead);
 			break;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:15:23 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/18 14:16:18 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:58:43 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,43 @@
 
 void	eating(t_philo *philo)
 {
-	if (philo->rank % 2 == 0)
-	{
-		pthread_mutex_lock(philo->r_fork);
-		philo_scribing("has taken a fork", philo, philo->rank);
+		if (philo->rank % 2 == 0)
+		{
+			pthread_mutex_lock(philo->r_fork);
+			philo_scribing("has taken a fork", philo, philo->rank);
 
-		pthread_mutex_lock(philo->l_fork);
-		philo_scribing("has taken a fork", philo, philo->rank);
-	}
-	else
-	{
-		pthread_mutex_lock(philo->l_fork);
-		philo_scribing("has taken a fork", philo, philo->rank);
+			pthread_mutex_lock(philo->l_fork);
+			philo_scribing("has taken a fork", philo, philo->rank);
+		}
+		else
+		{
+			pthread_mutex_lock(philo->l_fork);
+			philo_scribing("has taken a fork", philo, philo->rank);
 
-		pthread_mutex_lock(philo->r_fork);
-		philo_scribing("has taken a fork", philo, philo->rank);
+			pthread_mutex_lock(philo->r_fork);
+			philo_scribing("has taken a fork", philo, philo->rank);
+		}
+		pthread_mutex_lock(philo->meal_lock);
+		philo_scribing("is eating", philo, philo->rank);
+		philo->eating = 1;
+		philo->last_meal = get_current_time();
+		philo->meals_eaten++; // probleme qui a mange ([i]) faire une while des philo avec un int qui s'incremente quand le philo i a tout manger et ils ont tous manger si le int atteint le nombre de repas demande dans le monitor I guess
+		pthread_mutex_unlock(philo->meal_lock);
+		// pthread_mutex_lock(philo->meal_lock);
+		ft_usleep(philo->time_to_eat, *philo->dead);
+		philo->eating = 0;
+		if (philo->rank % 2 == 0)
+		{
+			pthread_mutex_unlock(philo->l_fork);
+			pthread_mutex_unlock(philo->r_fork);
+		}
+		else
+		{
+			pthread_mutex_unlock(philo->r_fork);
+			pthread_mutex_unlock(philo->l_fork);
+		}
+		// pthread_mutex_unlock(philo->meal_lock);
 	}
-	philo_scribing("is eating", philo, philo->rank);
-	pthread_mutex_lock(philo->meal_lock);
-	philo->last_meal = get_current_time();
-	philo->meals_eaten++; // probleme qui a mange ([i]) faire une while des philo avec un int qui s'incremente quand le philo i a tout manger et ils ont tous manger si le int atteint le nombre de repas demande dans le monitor I guess
-	pthread_mutex_unlock(philo->meal_lock);
-	if (philo->time_to_eat != 0)
-		ft_usleep(philo->time_to_eat);
-	//pthread_mutex_lock(philo->meal_lock);
-	//pthread_mutex_unlock(philo->meal_lock);
-	pthread_mutex_unlock(philo->l_fork);
-	pthread_mutex_unlock(philo->r_fork);
-}
 
 void	is_thinking_ftc(t_philo	*philo)
 {
@@ -54,13 +63,13 @@ void	is_thinking_ftc(t_philo	*philo)
 		t_t_think = 1;
 	if (t_t_think > 600)
 		t_t_think = 200;
-	usleep(t_t_think);
+	ft_usleep(t_t_think, *philo->dead);
 }
 
 void	sleeping_and_thinking(t_philo *philo)
 {
 	philo_scribing("is sleeping", philo, philo->rank);
-	ft_usleep(philo->time_to_sleep);
+	ft_usleep(philo->time_to_sleep, *philo->dead);
 
 	philo_scribing("is thinking", philo, philo->rank);
 	is_thinking_ftc(philo);
@@ -72,20 +81,43 @@ void	*routine(void *arg)
 	t_philo *philo = (t_philo *)arg;
 
 	if (philo->rank % 2 != 0)
-		usleep(100);
+		ft_usleep(100, *philo->dead);
 	while (1)
 	{
-		eating(philo);
-		sleeping_and_thinking(philo);
+		pthread_mutex_lock(philo->dead_lock);
+		if (*(philo)->dead == 0)
+		{
+			pthread_mutex_unlock(philo->dead_lock);
+			eating(philo);
+		}
+		else
+			pthread_mutex_unlock(philo->dead_lock);
+		pthread_mutex_lock(philo->dead_lock);
+		if (*(philo)->dead == 0)
+		{
+			pthread_mutex_unlock(philo->dead_lock);
+			sleeping_and_thinking(philo);
+		}
+		else
+			pthread_mutex_unlock(philo->dead_lock);
 		pthread_mutex_lock(philo->dead_lock);
 		if (*philo->dead == 1)
 		{
-			ft_usleep(500);
+			pthread_mutex_unlock(philo->dead_lock);
+			if (philo->eating == 1)
+			{
+				pthread_mutex_unlock(philo->meal_lock);
+				pthread_mutex_unlock(philo->l_fork);
+				pthread_mutex_unlock(philo->r_fork);
+			}
+				//ft_usleep(500);
 			break;
 		}
-		pthread_mutex_unlock(philo->dead_lock);
+		else
+			pthread_mutex_unlock(philo->dead_lock);
 	}
-	pthread_mutex_unlock(philo->write_lock);
+
+	// pthread_mutex_unlock(philo->write_lock);
 	return (NULL);
 }
 
@@ -96,19 +128,11 @@ void	*routine(void *arg)
 
 void	launch_thread(t_data *data)
 {
-
-
 	pthread_t	death_thread;
-
-
-	pthread_create(&death_thread, NULL, &supervisor, data->philos);
-
-	// if (pthread_create(&death_thread, NULL, &supervisor, data->philos) != 0)
-	// exit(EXIT_FAILURE);
-
-
-
 	int i;
+
+	pthread_create(&death_thread, NULL, &supervisor, data);
+
 
 	i = 0;
 	while (i < data->philos->nb_philos)
