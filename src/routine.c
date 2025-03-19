@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:15:23 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/18 16:58:43 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 11:22:48 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	eating(t_philo *philo)
 		philo->meals_eaten++; // probleme qui a mange ([i]) faire une while des philo avec un int qui s'incremente quand le philo i a tout manger et ils ont tous manger si le int atteint le nombre de repas demande dans le monitor I guess
 		pthread_mutex_unlock(philo->meal_lock);
 		// pthread_mutex_lock(philo->meal_lock);
-		ft_usleep(philo->time_to_eat, *philo->dead);
+		ft_usleep(philo->time_to_eat, philo);
 		philo->eating = 0;
 		if (philo->rank % 2 == 0)
 		{
@@ -63,13 +63,16 @@ void	is_thinking_ftc(t_philo	*philo)
 		t_t_think = 1;
 	if (t_t_think > 600)
 		t_t_think = 200;
-	ft_usleep(t_t_think, *philo->dead);
+	// pthread_mutex_lock(philo->dead_lock);
+	ft_usleep(t_t_think, philo);
+	// pthread_mutex_unlock(philo->dead_lock);
+
 }
 
 void	sleeping_and_thinking(t_philo *philo)
 {
 	philo_scribing("is sleeping", philo, philo->rank);
-	ft_usleep(philo->time_to_sleep, *philo->dead);
+	ft_usleep(philo->time_to_sleep, philo);
 
 	philo_scribing("is thinking", philo, philo->rank);
 	is_thinking_ftc(philo);
@@ -81,7 +84,7 @@ void	*routine(void *arg)
 	t_philo *philo = (t_philo *)arg;
 
 	if (philo->rank % 2 != 0)
-		ft_usleep(100, *philo->dead);
+		ft_usleep(1, philo);
 	while (1)
 	{
 		pthread_mutex_lock(philo->dead_lock);
@@ -101,7 +104,7 @@ void	*routine(void *arg)
 		else
 			pthread_mutex_unlock(philo->dead_lock);
 		pthread_mutex_lock(philo->dead_lock);
-		if (*philo->dead == 1)
+		if (*(philo)->dead == 1)
 		{
 			pthread_mutex_unlock(philo->dead_lock);
 			if (philo->eating == 1)

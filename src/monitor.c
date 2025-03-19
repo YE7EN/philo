@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 12:25:31 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/18 16:59:18 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 11:22:23 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	check_if_all_eaten(void *arg)
 		pthread_mutex_unlock(&data->meal_lock);
 		if (for_all == data->philos->nb_philos)
 		{
-			pthread_mutex_lock(data->philos->dead_lock);
+			pthread_mutex_lock(&data->dead_lock);
 			(data->is_dead = 1);
 			pthread_mutex_unlock(&data->dead_lock);
 			return (1);
@@ -80,17 +80,17 @@ int	check_death(void *arg)
 		pthread_mutex_lock(&data->meal_lock);
 		if (time - data->philos[i].last_meal >= data->philos[i].time_to_die)
 		{
-			pthread_mutex_lock(&data->dead_lock);
-			(data->is_dead = 1);
-			pthread_mutex_unlock(&data->dead_lock);
-			pthread_mutex_lock(&data->write_lock);
-			printf("%ld, %d, died 🪦​", get_current_time() - data->philos->start_time, data->philos[i].rank);
-			pthread_mutex_unlock(&data->write_lock);
 			pthread_mutex_unlock(&data->meal_lock);
+			pthread_mutex_lock(data->philos->dead_lock);
+			(data->is_dead = 1);
+			pthread_mutex_unlock(data->philos->dead_lock);
+			pthread_mutex_lock(&data->write_lock);
+			printf("%ld, %d, died\n", get_current_time() - data->philos->start_time, data->philos[i].rank);
+			pthread_mutex_unlock(&data->write_lock);
 			break ;
 		}
 		pthread_mutex_unlock(&data->meal_lock);
-		usleep(5);
+		usleep(1);
 		i++;
 	}
 	pthread_mutex_lock(&data->dead_lock);
@@ -111,11 +111,15 @@ void	*supervisor(void *arg)
 	data = (t_data *) arg;
 	while (1)
 	{
+		// pthread_mutex_lock(data->philos->dead_lock);
 		if (check_death(data) == 1 || check_if_all_eaten(data) == 1)
 		{
-			ft_usleep(1, data->is_dead);
+			// pthread_mutex_unlock(data->philos->dead_lock);
+			usleep(1);
 			break;
 		}
+		usleep(1);
+		// pthread_mutex_unlock(data->philos->dead_lock);
 	}
 	return (arg);
 }

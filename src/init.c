@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:07:48 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/17 13:00:47 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 10:37:41 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	init_philos(char **argv, t_data *data, t_philo *philos, pthread_mutex_t *for
 		philos[i].eating = 0;
 		philos[i].meals_eaten = 0;
 		philos[i].dead = &data->is_dead;
+		// printf("%p ----- %p\n", philos[i].dead, &data->is_dead);
 		philos[i].start_time = get_current_time();
 		philos[i].last_meal = get_current_time();
 		philos[i].r_fork = &forks[i];
