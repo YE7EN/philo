@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:41 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/19 13:26:31 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:18:59 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ int		ft_atoi(const char *nptr);
 time_t	get_current_time(void);
 int		ft_usleep(size_t milliseconds, t_philo *philo);
 void	free_all(t_data *data, pthread_mutex_t *forks);
+void	eat_sleep_think_ftc(t_philo *philo);
+void	take_fork_ftc(t_philo *philo);
+void	put_forks_fct(t_philo *philo);
 
 ////////////*init.c////////////////
 int		init_philos(char **argv, t_data *data, t_philo *philos,
@@ -65,6 +68,9 @@ int		init_args(t_philo *philos, char **argv);
 ////////////*routine.c////////////////
 void	*routine(void *arg);
 void	launch_thread(t_data *data);
+void	sleeping_and_thinking(t_philo *philo);
+void	is_thinking_ftc(t_philo	*philo);
+void	eating(t_philo *philo);
 
 ////////////*monitor.c////////////////
 void	philo_scribing(char *str, t_philo *philo, int rank);

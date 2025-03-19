@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:53:58 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/19 13:19:10 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:43:13 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ time_t	get_current_time(void)
 
 int	ft_atoi(const char *nptr)
 {
-	int	res;
+	long	res;
 
 	res = 0;
 	while (*nptr)
@@ -55,6 +55,11 @@ int	ft_atoi(const char *nptr)
 		}
 		res = res * 10 + (*nptr - '0');
 		nptr++;
+	}
+	if (res > 2147483647)
+	{
+		printf("be carefull, overflow detected\n");
+		return (-1);
 	}
 	return (res);
 }

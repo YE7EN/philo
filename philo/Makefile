@@ -6,6 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -pthread -g
 SRC =	src/main.c \
 		src/init.c \
 		src/utils.c \
+		src/utils_2.c \
 		src/routine.c\
 		src/monitor.c\
 
@@ -17,7 +18,7 @@ OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:src/%.c=%.o))
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(NAME)
+$(NAME): $(OBJ)
 	@echo "philo's ready to eat, sleep, think... or die"
 	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 

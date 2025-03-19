@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 12:25:31 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/19 13:23:25 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:11:52 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	ref_check_death(t_data *data, int i)
 	(data->is_dead = 1);
 	pthread_mutex_unlock(data->philos->dead_lock);
 	pthread_mutex_lock(&data->write_lock);
-	printf("%ld, %d, died\n", get_current_time()
+	printf("%ld %d died\n", get_current_time()
 		- data->philos->start_time, data->philos[i].rank);
 	pthread_mutex_unlock(&data->write_lock);
 }

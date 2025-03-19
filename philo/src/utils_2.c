@@ -6,11 +6,25 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:18:58 by qumiraud          #+#    #+#             */
-/*   Updated: 2025/03/19 13:19:51 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:18:19 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+void	put_forks_fct(t_philo *philo)
+{
+	if (philo->rank % 2 == 0)
+	{
+		pthread_mutex_unlock(philo->l_fork);
+		pthread_mutex_unlock(philo->r_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->r_fork);
+		pthread_mutex_unlock(philo->l_fork);
+	}
+}
 
 void	eat_sleep_think_ftc(t_philo *philo)
 {

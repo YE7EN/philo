@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:15:23 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/19 13:18:24 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:58:47 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 
 void	eating(t_philo *philo)
 {
+	if (philo->nb_philos == 1)
+	{
+		pthread_mutex_lock(philo->r_fork);
+		philo_scribing("has taken a fork", philo, philo->rank);
+		ft_usleep(philo->time_to_die, philo);
+		pthread_mutex_unlock(philo->r_fork);
+		return ;
+	}
 	take_fork_ftc(philo);
 	pthread_mutex_lock(philo->meal_lock);
 	philo_scribing("is eating", philo, philo->rank);
@@ -23,16 +31,7 @@ void	eating(t_philo *philo)
 	pthread_mutex_unlock(philo->meal_lock);
 	ft_usleep(philo->time_to_eat, philo);
 	philo->eating = 0;
-	if (philo->rank % 2 == 0)
-	{
-		pthread_mutex_unlock(philo->l_fork);
-		pthread_mutex_unlock(philo->r_fork);
-	}
-	else
-	{
-		pthread_mutex_unlock(philo->r_fork);
-		pthread_mutex_unlock(philo->l_fork);
-	}
+	put_forks_fct(philo);
 }
 
 void	is_thinking_ftc(t_philo	*philo)

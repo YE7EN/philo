@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:07:48 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/19 13:01:02 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:38:56 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int	init_args(t_philo *philos, char **argv)
 	philos->time_to_die = (ft_atoi(argv[2]));
 	philos->time_to_eat = (ft_atoi(argv[3]));
 	philos->time_to_sleep = (ft_atoi(argv[4]));
-	if (philos->nb_philos == -1
+	if (philos->nb_philos == -1 || philos->time_to_sleep == -1
 		|| philos->time_to_die == -1 || philos->time_to_eat == -1)
 		return (-1);
 	if (argv[5] && ft_atoi(argv[5]) > 0)
 		philos->num_times_to_eat = (ft_atoi(argv[5]));
 	else
-		philos->num_times_to_eat = -1;
+		return (-1);
 	return (0);
 }
 
