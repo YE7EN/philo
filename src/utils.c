@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:53:58 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/19 11:25:13 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:49:33 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	ft_usleep(size_t milliseconds, t_philo *philo)
 			break;
 		}
 		pthread_mutex_unlock(philo->dead_lock);
-		usleep(1);
+		usleep(1 / 1000);
 	}
 	return (0);
 }

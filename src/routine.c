@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:15:23 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/19 11:22:48 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:48:10 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,6 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-
-
-
-#include <string.h>
-
 void	launch_thread(t_data *data)
 {
 	pthread_t	death_thread;
@@ -141,19 +136,15 @@ void	launch_thread(t_data *data)
 	while (i < data->philos->nb_philos)
 	{
 		if (pthread_create(&data->philos[i].thread, NULL, &routine, &data->philos[i]) != 0)
-		{
-			exit(EXIT_FAILURE);
-			printf("that's fuckep up son <--- Pardon ? xD\n");
-		}
+			free_all(data, data->philos->r_fork);
 		i++;
-		//printf("\n\n%d\n\n", i);
 	}
 	i = 0;
 	pthread_join(death_thread, NULL);
 
 	while (i < data->philos[0].nb_philos)
 	{
+		pthread_join(data->philos[i].thread, NULL);
 		i++;
 	}
-	// pthread_attr_destroy(&data->philos->write_lock);
 }

@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:41 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/19 11:22:01 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:45:13 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ typedef struct	s_data
 int	ft_atoi(const char *nptr);
 time_t	get_current_time(void);
 int	ft_usleep(size_t milliseconds, t_philo *philo);
+void	free_all(t_data *data, pthread_mutex_t *forks);
+
 
 
 ////////////*init.c////////////////
