@@ -6,32 +6,32 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:07:48 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/19 10:37:41 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:01:02 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	init_args(t_philo *philos, char ** argv)
+int	init_args(t_philo *philos, char **argv)
 {
 	philos->nb_philos = (ft_atoi(argv[1]));
-
 	philos->time_to_die = (ft_atoi(argv[2]));
 	philos->time_to_eat = (ft_atoi(argv[3]));
 	philos->time_to_sleep = (ft_atoi(argv[4]));
-	if (philos->nb_philos == -1 || philos->time_to_die == -1 || philos->time_to_eat == -1)
+	if (philos->nb_philos == -1
+		|| philos->time_to_die == -1 || philos->time_to_eat == -1)
 		return (-1);
 	if (argv[5] && ft_atoi(argv[5]) > 0)
 		philos->num_times_to_eat = (ft_atoi(argv[5]));
 	else
 		philos->num_times_to_eat = -1;
-
 	return (0);
 }
 
-int	init_philos(char **argv, t_data *data, t_philo *philos, pthread_mutex_t *forks)
+int	init_philos(char **argv, t_data *data, t_philo *philos,
+pthread_mutex_t *forks)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < ft_atoi(argv[1]))
@@ -45,7 +45,6 @@ int	init_philos(char **argv, t_data *data, t_philo *philos, pthread_mutex_t *for
 		philos[i].eating = 0;
 		philos[i].meals_eaten = 0;
 		philos[i].dead = &data->is_dead;
-		// printf("%p ----- %p\n", philos[i].dead, &data->is_dead);
 		philos[i].start_time = get_current_time();
 		philos[i].last_meal = get_current_time();
 		philos[i].r_fork = &forks[i];
@@ -57,7 +56,7 @@ int	init_philos(char **argv, t_data *data, t_philo *philos, pthread_mutex_t *for
 	return (0);
 }
 
-void init_data(t_data *data, t_philo *philos)
+void	init_data(t_data *data, t_philo *philos)
 {
 	data->is_dead = 0;
 	data->philos = philos;

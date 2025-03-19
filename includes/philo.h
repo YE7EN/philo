@@ -6,31 +6,28 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:41 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/19 12:45:13 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:26:31 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <unistd.h>
-#include <stdio.h>
-#include <pthread.h>
-#include <stdlib.h>
-#include <sys/time.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <pthread.h>
+# include <stdlib.h>
+# include <sys/time.h>
 
-
-
-
-typedef struct	s_philo
+typedef struct s_philo
 {
-	int				rank;//philo's place at the table
+	int				rank;
 	int				eating;
 	int				meals_eaten;
 	int				nb_philos;
 	int				num_times_to_eat;
-	int				*dead; //boolean 1=philo's dead 0=all alive
-	pthread_t		thread; //philo
+	int				*dead;
+	pthread_t		thread;
 	time_t			last_meal;
 	time_t			time_to_die;
 	time_t			time_to_eat;
@@ -41,31 +38,29 @@ typedef struct	s_philo
 	pthread_mutex_t	*dead_lock;
 	pthread_mutex_t	*meal_lock;
 	pthread_mutex_t	*write_lock;
-}				t_philo;
+}	t_philo;
 
-typedef struct	s_data
+typedef struct s_data
 {
 	int				is_dead;
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	meal_lock;
 	pthread_mutex_t	write_lock;
 	t_philo			*philos;
-}				t_data;
+}	t_data;
 
 ////////////*utils.c////////////////
-int	ft_atoi(const char *nptr);
+int		ft_atoi(const char *nptr);
 time_t	get_current_time(void);
-int	ft_usleep(size_t milliseconds, t_philo *philo);
+int		ft_usleep(size_t milliseconds, t_philo *philo);
 void	free_all(t_data *data, pthread_mutex_t *forks);
 
-
-
 ////////////*init.c////////////////
-int		init_philos(char **argv, t_data *data, t_philo *philos, pthread_mutex_t *forks);
+int		init_philos(char **argv, t_data *data, t_philo *philos,
+			pthread_mutex_t *forks);
 void	init_fork(pthread_mutex_t *forks, int nb_philo);
-void init_data(t_data *data, t_philo *philo);
-int	init_args(t_philo *philos, char ** argv);
-//int	init_malloc_struct(t_data **data, int nb_philo);
+void	init_data(t_data *data, t_philo *philo);
+int		init_args(t_philo *philos, char **argv);
 
 ////////////*routine.c////////////////
 void	*routine(void *arg);
@@ -74,10 +69,6 @@ void	launch_thread(t_data *data);
 ////////////*monitor.c////////////////
 void	philo_scribing(char *str, t_philo *philo, int rank);
 void	*supervisor(void *arg);
-int	check_death(void *arg);
-
-
-
-
+int		check_death(void *arg);
 
 #endif

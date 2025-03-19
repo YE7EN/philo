@@ -6,11 +6,29 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:53:58 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/19 12:55:52 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:19:10 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+void	take_fork_ftc(t_philo *philo)
+{
+	if (philo->rank % 2 == 0)
+	{
+		pthread_mutex_lock(philo->r_fork);
+		philo_scribing("has taken a fork", philo, philo->rank);
+		pthread_mutex_lock(philo->l_fork);
+		philo_scribing("has taken a fork", philo, philo->rank);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->l_fork);
+		philo_scribing("has taken a fork", philo, philo->rank);
+		pthread_mutex_lock(philo->r_fork);
+		philo_scribing("has taken a fork", philo, philo->rank);
+	}
+}
 
 time_t	get_current_time(void)
 {
@@ -67,7 +85,7 @@ int	ft_usleep(size_t milliseconds, t_philo *philo)
 		if (*(philo)->dead == 1)
 		{
 			pthread_mutex_unlock(philo->dead_lock);
-			break;
+			break ;
 		}
 		pthread_mutex_unlock(philo->dead_lock);
 		usleep(1);

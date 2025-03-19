@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:35 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/19 11:01:37 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:26:08 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,17 @@ static void	ft_verif_argc(int argc)
 
 int	main(int argc, char **argv)
 {
-	t_data	data;
-	t_philo philos[ft_atoi(argv[1])];
-	pthread_mutex_t	forks[ft_atoi(argv[1])];
+	t_data			data;
+	t_philo			*philos;
+	pthread_mutex_t	*forks;
 
+	philos[ft_atoi(argv[1])];
+	forks[ft_atoi(argv[1])];
 	ft_verif_argc(argc);
 	init_data(&data, philos);
 	init_fork(forks, ft_atoi(argv[1]));
 	if (init_philos(argv, &data, philos, forks) != 0)
 		return (1);
-	//jusqu'ici on est clean//
 	launch_thread(&data);
-
-	printf("\n\nENDING\n\n");
 	return (0);
 }
-
-
-
