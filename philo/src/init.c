@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:07:48 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/19 14:38:56 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/20 10:38:04 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	init_args(t_philo *philos, char **argv)
 	if (philos->nb_philos == -1 || philos->time_to_sleep == -1
 		|| philos->time_to_die == -1 || philos->time_to_eat == -1)
 		return (-1);
-	if (argv[5] && ft_atoi(argv[5]) > 0)
+	if (argv[5])
 		philos->num_times_to_eat = (ft_atoi(argv[5]));
-	else
+	if (philos->num_times_to_eat == -1)
 		return (-1);
 	return (0);
 }
@@ -36,7 +36,7 @@ pthread_mutex_t *forks)
 	i = -1;
 	while (++i < ft_atoi(argv[1]))
 	{
-		if (init_args(&philos[i], argv) == -1)
+		if (init_args(&philos[i], argv) != 0)
 			return (-1);
 		philos[i].dead_lock = &data->dead_lock;
 		philos[i].meal_lock = &data->meal_lock;

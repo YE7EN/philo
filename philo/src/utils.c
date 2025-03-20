@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 10:53:58 by quentin           #+#    #+#             */
-/*   Updated: 2025/03/19 14:43:13 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/20 10:29:41 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ int	ft_atoi(const char *nptr)
 	long	res;
 
 	res = 0;
+	if (ft_strlen((char *)nptr) > 11 || ft_strlen((char *)nptr) == -1)
+	{
+		printf("be carefull, overflow detected\n");
+		return (-1);
+	}
 	while (*nptr)
 	{
 		if (*nptr < '0' || *nptr > '9')

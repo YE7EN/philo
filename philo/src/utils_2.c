@@ -6,11 +6,23 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:18:58 by qumiraud          #+#    #+#             */
-/*   Updated: 2025/03/19 14:18:19 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/20 10:28:58 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (-1);
+	while (str[i])
+		i++;
+	return (i);
+}
 
 void	put_forks_fct(t_philo *philo)
 {

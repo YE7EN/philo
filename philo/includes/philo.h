@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:26:41 by pjurdana          #+#    #+#             */
-/*   Updated: 2025/03/19 14:18:59 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/03/20 09:45:13 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	free_all(t_data *data, pthread_mutex_t *forks);
 void	eat_sleep_think_ftc(t_philo *philo);
 void	take_fork_ftc(t_philo *philo);
 void	put_forks_fct(t_philo *philo);
+int		ft_strlen(char *str);
 
 ////////////*init.c////////////////
 int		init_philos(char **argv, t_data *data, t_philo *philos,
